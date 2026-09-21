@@ -3,6 +3,794 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jeygly Store</title>
+
+<style>
+:root{
+  --primary:#6c5ce7;
+  --secondary:#00b894;
+  --dark:#151522;
+  --light:#f5f6fa;
+  --card:#ffffff;
+  --text:#222;
+  --muted:#777;
+  --danger:#e74c3c;
+  --border:#e5e5e5;
+}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  font-family:Arial,Helvetica,sans-serif;
+  background:var(--light);
+  color:var(--text);
+}
+
+button,
+input,
+textarea,
+select{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+.hidden{
+  display:none!important;
+}
+
+/* HEADER */
+
+header{
+  background:var(--dark);
+  color:white;
+  position:sticky;
+  top:0;
+  z-index:1000;
+  box-shadow:0 3px 15px #0002;
+}
+
+.header-inner{
+  max-width:1400px;
+  margin:auto;
+  min-height:70px;
+  display:flex;
+  align-items:center;
+  gap:20px;
+  padding:12px 20px;
+}
+
+.logo{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  min-width:220px;
+}
+
+.logo img{
+  width:48px;
+  height:48px;
+  border-radius:12px;
+  object-fit:cover;
+  background:white;
+}
+
+.logo h1{
+  font-size:21px;
+}
+
+.logo small{
+  color:#bbb;
+}
+
+.search{
+  flex:1;
+}
+
+.search input{
+  width:100%;
+  border:0;
+  outline:0;
+  padding:13px 17px;
+  border-radius:30px;
+}
+
+.header-actions{
+  display:flex;
+  gap:8px;
+}
+
+.icon-btn{
+  border:0;
+  background:#ffffff18;
+  color:white;
+  padding:11px 13px;
+  border-radius:10px;
+}
+
+.icon-btn:hover{
+  background:#ffffff30;
+}
+
+/* HERO */
+
+.hero{
+  max-width:1400px;
+  margin:20px auto;
+  padding:55px 30px;
+  border-radius:25px;
+  background:
+    linear-gradient(135deg,var(--primary),var(--secondary));
+  color:white;
+  position:relative;
+  overflow:hidden;
+}
+
+.hero:after{
+  content:"";
+  position:absolute;
+  width:300px;
+  height:300px;
+  border-radius:50%;
+  background:#fff2;
+  right:-100px;
+  top:-100px;
+}
+
+.hero-content{
+  position:relative;
+  z-index:2;
+  max-width:700px;
+}
+
+.hero h2{
+  font-size:clamp(32px,5vw,58px);
+  margin-bottom:15px;
+}
+
+.hero p{
+  font-size:18px;
+  line-height:1.6;
+  opacity:.95;
+}
+
+/* LAYOUT */
+
+.container{
+  max-width:1400px;
+  margin:auto;
+  padding:0 20px 40px;
+}
+
+.layout{
+  display:grid;
+  grid-template-columns:250px 1fr;
+  gap:20px;
+}
+
+.layout.right-sidebar{
+  grid-template-columns:1fr 250px;
+}
+
+.sidebar{
+  background:white;
+  border-radius:18px;
+  padding:20px;
+  height:max-content;
+  position:sticky;
+  top:90px;
+  box-shadow:0 4px 20px #0000000b;
+}
+
+.sidebar h3{
+  margin-bottom:15px;
+}
+
+.category-btn{
+  width:100%;
+  border:0;
+  background:#f3f3f6;
+  padding:12px;
+  border-radius:10px;
+  text-align:left;
+  margin-bottom:8px;
+}
+
+.category-btn:hover,
+.category-btn.active{
+  background:var(--primary);
+  color:white;
+}
+
+/* PRODUCTS */
+
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-bottom:18px;
+}
+
+.topbar h2{
+  font-size:25px;
+}
+
+.product-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:18px;
+}
+
+.product-card{
+  background:white;
+  border-radius:18px;
+  overflow:hidden;
+  box-shadow:0 5px 20px #0000000b;
+  transition:.2s;
+  position:relative;
+}
+
+.product-card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 10px 30px #0002;
+}
+
+.product-image{
+  width:100%;
+  height:210px;
+  object-fit:cover;
+  background:#eee;
+}
+
+.product-info{
+  padding:15px;
+}
+
+.badge{
+  display:inline-block;
+  padding:5px 8px;
+  border-radius:20px;
+  background:#ffeaa7;
+  color:#765b00;
+  font-size:11px;
+  margin-bottom:7px;
+}
+
+.product-title{
+  font-size:17px;
+  font-weight:bold;
+  margin-bottom:7px;
+}
+
+.product-description{
+  color:var(--muted);
+  font-size:13px;
+  min-height:38px;
+}
+
+.price{
+  font-size:22px;
+  font-weight:bold;
+  margin:12px 0;
+}
+
+.product-actions{
+  display:flex;
+  gap:8px;
+}
+
+.btn{
+  border:0;
+  padding:11px 14px;
+  border-radius:10px;
+  background:var(--primary);
+  color:white;
+  font-weight:bold;
+}
+
+.btn.secondary{
+  background:#eee;
+  color:#222;
+}
+
+.btn.success{
+  background:#00a884;
+}
+
+.btn.danger{
+  background:var(--danger);
+}
+
+.btn.full{
+  width:100%;
+}
+
+.empty{
+  background:white;
+  border-radius:18px;
+  padding:50px;
+  text-align:center;
+  color:#777;
+}
+
+/* BLOCKS */
+
+.custom-block{
+  background:white;
+  padding:25px;
+  border-radius:18px;
+  margin:20px auto;
+  max-width:1400px;
+  box-shadow:0 4px 20px #0000000b;
+}
+
+.custom-block h2{
+  margin-bottom:8px;
+}
+
+/* CART */
+
+.cart{
+  position:fixed;
+  right:20px;
+  bottom:20px;
+  width:370px;
+  max-width:calc(100% - 40px);
+  background:white;
+  border-radius:20px;
+  box-shadow:0 15px 50px #0004;
+  z-index:1500;
+  overflow:hidden;
+}
+
+.cart-header{
+  padding:17px;
+  background:var(--dark);
+  color:white;
+  display:flex;
+  justify-content:space-between;
+}
+
+.cart-body{
+  max-height:380px;
+  overflow:auto;
+  padding:15px;
+}
+
+.cart-item{
+  display:grid;
+  grid-template-columns:60px 1fr auto;
+  gap:10px;
+  align-items:center;
+  padding:10px 0;
+  border-bottom:1px solid var(--border);
+}
+
+.cart-item img{
+  width:60px;
+  height:60px;
+  border-radius:10px;
+  object-fit:cover;
+}
+
+.cart-footer{
+  padding:15px;
+  border-top:1px solid var(--border);
+}
+
+.total{
+  font-size:21px;
+  font-weight:bold;
+  margin-bottom:12px;
+}
+
+/* MODAL */
+
+.modal{
+  position:fixed;
+  inset:0;
+  background:#0008;
+  z-index:3000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:15px;
+}
+
+.modal-box{
+  background:white;
+  width:900px;
+  max-width:100%;
+  max-height:94vh;
+  overflow:auto;
+  border-radius:20px;
+}
+
+.modal-header{
+  padding:18px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-bottom:1px solid var(--border);
+  position:sticky;
+  top:0;
+  background:white;
+  z-index:5;
+}
+
+.close{
+  border:0;
+  background:#eee;
+  border-radius:50%;
+  width:38px;
+  height:38px;
+}
+
+.tabs{
+  display:flex;
+  gap:5px;
+  padding:10px;
+  overflow:auto;
+  border-bottom:1px solid var(--border);
+}
+
+.tab{
+  border:0;
+  padding:10px 14px;
+  border-radius:9px;
+  white-space:nowrap;
+}
+
+.tab.active{
+  background:var(--primary);
+  color:white;
+}
+
+.panel{
+  padding:20px;
+}
+
+.field{
+  margin-bottom:15px;
+}
+
+.field label{
+  display:block;
+  font-weight:bold;
+  margin-bottom:6px;
+}
+
+.field input,
+.field textarea,
+.field select{
+  width:100%;
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:12px;
+  outline:none;
+}
+
+.field textarea{
+  min-height:100px;
+  resize:vertical;
+}
+
+.row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
+}
+
+.admin-list{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.admin-item{
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:12px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+}
+
+.admin-item-info{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.admin-item img{
+  width:60px;
+  height:60px;
+  object-fit:cover;
+  border-radius:10px;
+}
+
+.actions{
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+}
+
+/* FOOTER */
+
+footer{
+  background:var(--dark);
+  color:white;
+  margin-top:30px;
+  padding:35px 20px;
+}
+
+.footer-inner{
+  max-width:1400px;
+  margin:auto;
+  text-align:center;
+}
+
+footer p{
+  color:#bbb;
+  margin-top:8px;
+}
+
+/* TOAST */
+
+.toast{
+  position:fixed;
+  left:50%;
+  bottom:25px;
+  transform:translateX(-50%);
+  background:#222;
+  color:white;
+  padding:13px 20px;
+  border-radius:30px;
+  z-index:5000;
+  box-shadow:0 5px 20px #0004;
+}
+
+/* MOBILE */
+
+@media(max-width:1100px){
+  .product-grid{
+    grid-template-columns:repeat(3,1fr);
+  }
+}
+
+@media(max-width:850px){
+  .header-inner{
+    flex-wrap:wrap;
+  }
+
+  .logo{
+    min-width:auto;
+  }
+
+  .search{
+    order:3;
+    flex-basis:100%;
+  }
+
+  .layout,
+  .layout.right-sidebar{
+    grid-template-columns:1fr;
+  }
+
+  .sidebar{
+    position:static;
+  }
+
+  .product-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+}
+
+@media(max-width:520px){
+  .container{
+    padding:0 10px 30px;
+  }
+
+  .hero{
+    margin:10px;
+    padding:35px 20px;
+  }
+
+  .product-grid{
+    grid-template-columns:1fr;
+  }
+
+  .row{
+    grid-template-columns:1fr;
+  }
+
+  .header-actions .hide-mobile{
+    display:none;
+  }
+
+  .cart{
+    right:10px;
+    bottom:10px;
+    max-width:calc(100% - 20px);
+    width:100%;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="header-inner">
+
+    <div class="logo">
+      <img id="logoImage" alt="Logo">
+      <div>
+        <h1 id="storeName">Jeygly Store</h1>
+        <small id="storeSubtitle">Tu tienda online</small>
+      </div>
+    </div>
+
+    <div class="search">
+      <input
+        id="searchInput"
+        type="search"
+        placeholder="Buscar productos..."
+        oninput="renderProducts()"
+      >
+    </div>
+
+    <div class="header-actions">
+      <button class="icon-btn" onclick="openCart()">🛒 <span id="cartCount">0</span></button>
+      <button class="icon-btn" onclick="openAdmin()">⚙️</button>
+    </div>
+
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-content">
+    <h2 id="heroTitle">Compra fácil, rápido y seguro</h2>
+    <p id="heroText">
+      Descubre nuestros productos y realiza tu pedido directamente por WhatsApp.
+    </p>
+  </div>
+</section>
+
+<div id="blocksContainer"></div>
+
+<div class="container">
+
+  <div class="layout" id="mainLayout">
+
+    <aside class="sidebar" id="sidebar">
+
+      <h3>📂 Categorías</h3>
+
+      <button class="category-btn active"
+        onclick="setCategory('Todas',this)">
+        Todas
+      </button>
+
+      <div id="categoryList"></div>
+
+    </aside>
+
+    <main>
+
+      <div class="topbar">
+        <h2>🛍️ Productos</h2>
+
+        <select id="sortSelect" onchange="renderProducts()"
+          style="padding:10px;border-radius:10px;border:1px solid #ddd;">
+          <option value="default">Ordenar</option>
+          <option value="low">Precio menor</option>
+          <option value="high">Precio mayor</option>
+          <option value="name">Nombre</option>
+        </select>
+      </div>
+
+      <div id="productGrid" class="product-grid"></div>
+
+    </main>
+
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <h2 id="footerTitle">Jeygly Store</h2>
+    <p id="footerText">Gracias por visitar nuestra tienda.</p>
+    <p>© <span id="year"></span> Jeygly Store</p>
+  </div>
+</footer>
+
+<!-- CARRITO -->
+
+<div id="cartBox" class="cart hidden">
+
+  <div class="cart-header">
+    <strong>🛒 Mi carrito</strong>
+    <button class="close" onclick="closeCart()">✕</button>
+  </div>
+
+  <div id="cartBody" class="cart-body"></div>
+
+  <div class="cart-footer">
+
+    <div class="total">
+      Total: <span id="cartTotal">S/ 0.00</span>
+    </div>
+
+    <button class="btn success full" onclick="sendWhatsApp()">
+      📲 Pedir por WhatsApp
+    </button>
+
+  </div>
+
+</div>
+
+<!-- ADMIN -->
+
+<div id="adminModal" class="modal hidden">
+
+  <div class="modal-box">
+
+    <div class="modal-header">
+      <strong>⚙️ Configurar Jeygly Store</strong>
+      <button class="close" onclick="closeAdmin()">✕</button>
+    </div>
+
+    <div class="tabs">
+
+      <button class="tab active" onclick="showTab('general',this)">
+        General
+      </button>
+
+      <button class="tab" onclick="showTab('design',this)">
+        Diseño
+      </button>
+
+      <button class="tab" onclick="showTab('products',this)">
+        Productos
+      </button>
+
+      <button class="tab" onclick="showTab('blocks',this)">
+        Bloques
+      </button>
+
+      <button class="tab" onclick="showTab('whatsapp',this)">
+        WhatsApp
+      </button>
+
+      <button class="tab" onclick="showTab('data',this)">
+        Datos
+      </button>
+
+    </div>
+
+    <!-- GENERAL -->
+
+    <section id="tab-general" class="panel">
+
+      <h2>Información de la tienda</h2>
+      <br>
+
+      <div class="field">
+       <!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#6c5ce7">
 <meta name="description" content="Jeygly Store - Tienda online personalizable">
 <title>Jeygly Store</title>
